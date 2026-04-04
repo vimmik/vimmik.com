@@ -102,8 +102,8 @@ export default function About() {
               className="border-l-2 border-sky/60 pl-6 py-2"
             >
               <p className="text-xl text-white font-medium leading-relaxed italic">
-                "Like the falcon — the fastest animal on earth — we deliver with
-                unmatched speed and precision."
+                &quot;Like the falcon — the fastest animal on earth — we deliver with
+                unmatched speed and precision.&quot;
               </p>
               <footer
                 className="mt-3 text-xs text-sky/60 tracking-[0.2em]"

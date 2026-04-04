@@ -217,7 +217,7 @@ export default function Contact() {
                   className="text-xs text-red-400/80"
                   style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
                 >
-                  // Please fill in name, email, and message.
+                  {'// Please fill in name, email, and message.'}
                 </motion.p>
               )}
             </AnimatePresence>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import FalconSVG from './FalconSVG';
@@ -10,7 +10,6 @@ const ParticleCanvas = dynamic(() => import('./ParticleCanvas'), { ssr: false })
 const CYCLE = ['Enterprise Systems', 'SaaS Platforms', 'Smart Solutions', 'Digital Excellence'];
 
 function useTypewriter(words: string[], speed = 60, pause = 1800) {
-  const [display, setDisplay] = useState('');
   const [wordIdx, setWordIdx] = useState(0);
   const [charIdx, setCharIdx] = useState(0);
   const [deleting, setDeleting] = useState(false);
@@ -26,15 +25,16 @@ function useTypewriter(words: string[], speed = 60, pause = 1800) {
     } else if (deleting && charIdx > 0) {
       timeout = setTimeout(() => setCharIdx((c) => c - 1), speed / 2);
     } else if (deleting && charIdx === 0) {
-      setDeleting(false);
-      setWordIdx((w) => (w + 1) % words.length);
+      timeout = setTimeout(() => {
+        setDeleting(false);
+        setWordIdx((w) => (w + 1) % words.length);
+      }, 0);
     }
 
-    setDisplay(current.slice(0, charIdx));
     return () => clearTimeout(timeout);
   }, [charIdx, deleting, wordIdx, words, speed, pause]);
 
-  return display;
+  return words[wordIdx].slice(0, charIdx);
 }
 
 
@@ -128,6 +128,7 @@ export default function Hero() {
                 className="text-lg sm:text-xl text-slate-300"
                 style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
               >
+                {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
                 <span className="text-sky/60">// </span>
                 {typed}
                 <span className="typewriter-cursor text-sky">_</span>

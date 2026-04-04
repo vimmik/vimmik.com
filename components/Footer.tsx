@@ -1,7 +1,5 @@
 'use client';
 
-import { NAV_LINKS } from '@/lib/constants';
-
 function FalconLogo() {
   return (
     <svg width="24" height="24" viewBox="0 0 28 28" fill="none" aria-hidden="true">
