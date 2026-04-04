@@ -1,26 +1,162 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-navy: #0D1B2A;
+  --color-sky: #3BA3E8;
+  --color-void: #080F17;
+  --font-orbitron: var(--font-orbitron);
+  --font-mono: var(--font-ibm-plex-mono);
+  --font-sans: var(--font-dm-sans);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #080F17;
+  color: #e2e8f0;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* ── Custom crosshair cursor ── */
+.cursor-outer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(59, 163, 232, 0.8);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s ease, width 0.15s ease, height 0.15s ease;
+}
+.cursor-inner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  background: #3BA3E8;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+}
+.cursor-outer::before,
+.cursor-outer::after {
+  content: '';
+  position: absolute;
+  background: rgba(59, 163, 232, 0.6);
+}
+.cursor-outer::before {
+  width: 8px;
+  height: 1px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.cursor-outer::after {
+  width: 1px;
+  height: 8px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ── Hex grid background ── */
+.hex-bg {
+  background-color: #080F17;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V18L28 2l28 16v32L28 66zm0 0v34m28-51l-28 17M0 49l28 17' fill='none' stroke='rgba(59%2C163%2C232%2C0.06)' stroke-width='1'/%3E%3C/svg%3E");
+}
+
+/* ── Marquee / infinite scroll ── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 30s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Signal ripple ── */
+@keyframes ripple {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(3.5); opacity: 0; }
+}
+.ripple-ring {
+  animation: ripple 2.4s ease-out infinite;
+}
+.ripple-ring:nth-child(2) { animation-delay: 0.8s; }
+.ripple-ring:nth-child(3) { animation-delay: 1.6s; }
+
+/* ── Typewriter cursor blink ── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.typewriter-cursor {
+  animation: blink 0.9s step-end infinite;
+}
+
+/* ── Scanlines ── */
+.scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.04) 2px,
+    rgba(0, 0, 0, 0.04) 4px
+  );
+  pointer-events: none;
+}
+
+/* ── Card glow on hover ── */
+.card-glow {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  border: 1px solid rgba(59, 163, 232, 0.25);
+}
+.card-glow:hover {
+  box-shadow: 0 0 0 1px rgba(59, 163, 232, 0.5), 0 0 24px rgba(59, 163, 232, 0.12), inset 0 0 20px rgba(59, 163, 232, 0.04);
+  border-color: rgba(59, 163, 232, 0.6);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #080F17; }
+::-webkit-scrollbar-thumb { background: rgba(59, 163, 232, 0.4); border-radius: 2px; }
+
+/* ── Focus ring ── */
+:focus-visible {
+  outline: 2px solid rgba(59, 163, 232, 0.7);
+  outline-offset: 2px;
+}
+
+/* ── Float animation for falcon ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(-2deg); }
+  50%       { transform: translateY(-16px) rotate(2deg); }
+}
+.falcon-float {
+  animation: float 7s ease-in-out infinite;
+}
+
+/* ── Glow pulse for buttons ── */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(59, 163, 232, 0.4); }
+  50%       { box-shadow: 0 0 20px rgba(59, 163, 232, 0.8); }
+}
+.glow-btn {
+  animation: glow-pulse 2.5s ease-in-out infinite;
 }
