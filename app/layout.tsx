@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Orbitron, IBM_Plex_Mono, DM_Sans } from 'next/font/google';
 import './globals.css';
 import CursorRig from '@/components/CursorRig';
+import { Analytics } from '@vercel/analytics/next';
 
 const orbitron = Orbitron({
   subsets: ['latin'],
@@ -46,6 +47,7 @@ export default function RootLayout({
       <body className="hex-bg antialiased">
         <CursorRig />
         {children}
+        <Analytics />
       </body>
     </html>
   );
