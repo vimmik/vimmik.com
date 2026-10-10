@@ -10,8 +10,7 @@ function AnimatedNumber({ value, suffix }: { value: number; suffix: string }) {
   const motionVal = useMotionValue(0);
   const spring = useSpring(motionVal, { stiffness: 60, damping: 20, restDelta: 0.01 });
   const display = useTransform(spring, (v) => {
-    if (suffix === '%') return v.toFixed(1);
-    return Math.round(v).toString();
+    return Number.isInteger(value) ? Math.round(v).toString() : v.toFixed(1);
   });
 
   useEffect(() => {
@@ -31,20 +30,20 @@ export default function Stats() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section className="relative py-16 bg-[#0D1B2A]/50 border-y border-[#3BA3E8]/10 overflow-hidden">
+    <section className="relative py-16 bg-[#0A1A33]/50 border-y border-[#0094EE]/10 overflow-hidden">
       {/* Background grid */}
       <div
         className="absolute inset-0 opacity-5"
         aria-hidden="true"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(59,163,232,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(59,163,232,0.5) 1px, transparent 1px)',
+            'linear-gradient(rgba(0,148,238,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(0,148,238,0.5) 1px, transparent 1px)',
           backgroundSize: '40px 40px',
         }}
       />
 
       <div ref={ref} className="relative z-10 max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 divide-x divide-[#3BA3E8]/15">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 divide-x divide-[#0094EE]/15">
           {STATS.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -57,7 +56,7 @@ export default function Stats() {
                 className="text-4xl sm:text-5xl font-bold text-white mb-2 tabular-nums"
                 style={{ fontFamily: 'var(--font-orbitron)' }}
               >
-                <span className="text-[#3BA3E8]">
+                <span className="text-[#0094EE]">
                   <AnimatedNumber value={stat.value} suffix={stat.suffix} />
                 </span>
               </div>

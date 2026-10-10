@@ -10,6 +10,8 @@ export default function CursorRig() {
     const outer = outerRef.current;
     const inner = innerRef.current;
     if (!outer || !inner) return;
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+    const root = document.documentElement;
 
     let mouseX = 0;
     let mouseY = 0;
@@ -18,6 +20,12 @@ export default function CursorRig() {
     let raf: number;
 
     const onMove = (e: MouseEvent) => {
+      // Reveal the rig (and hide the native cursor) on the first real mouse move
+      if (!root.classList.contains('cursor-rig-active')) {
+        root.classList.add('cursor-rig-active');
+        outerX = e.clientX;
+        outerY = e.clientY;
+      }
       mouseX = e.clientX;
       mouseY = e.clientY;
       inner.style.left = `${mouseX}px`;
@@ -38,6 +46,7 @@ export default function CursorRig() {
     return () => {
       window.removeEventListener('mousemove', onMove);
       cancelAnimationFrame(raf);
+      root.classList.remove('cursor-rig-active');
     };
   }, []);
 

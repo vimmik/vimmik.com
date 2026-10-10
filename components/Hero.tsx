@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import FalconSVG from './FalconSVG';
+import { LogoMark } from './Logo';
 
 const ParticleCanvas = dynamic(() => import('./ParticleCanvas'), { ssr: false });
 
@@ -44,13 +44,13 @@ function PcbDivider() {
     <div className="pcb-divider" aria-hidden="true">
       <svg viewBox="0 0 1440 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
         <path d="M0 12 H200 L220 4 H360 L380 12 H600 L620 20 H760 L780 12 H1000 L1020 4 H1160 L1180 12 H1440"
-          stroke="rgba(59,163,232,0.25)" strokeWidth="1" fill="none"/>
-        <circle cx="200" cy="12" r="2" fill="rgba(59,163,232,0.4)"/>
-        <circle cx="600" cy="12" r="2" fill="rgba(59,163,232,0.4)"/>
-        <circle cx="1000" cy="12" r="2" fill="rgba(59,163,232,0.4)"/>
-        <circle cx="380" cy="12" r="1.5" fill="rgba(59,163,232,0.3)"/>
-        <circle cx="780" cy="12" r="1.5" fill="rgba(59,163,232,0.3)"/>
-        <circle cx="1180" cy="12" r="1.5" fill="rgba(59,163,232,0.3)"/>
+          stroke="rgba(0,148,238,0.25)" strokeWidth="1" fill="none"/>
+        <circle cx="200" cy="12" r="2" fill="rgba(0,148,238,0.4)"/>
+        <circle cx="600" cy="12" r="2" fill="rgba(0,148,238,0.4)"/>
+        <circle cx="1000" cy="12" r="2" fill="rgba(0,148,238,0.4)"/>
+        <circle cx="380" cy="12" r="1.5" fill="rgba(0,148,238,0.3)"/>
+        <circle cx="780" cy="12" r="1.5" fill="rgba(0,148,238,0.3)"/>
+        <circle cx="1180" cy="12" r="1.5" fill="rgba(0,148,238,0.3)"/>
       </svg>
     </div>
   );
@@ -93,7 +93,7 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 pt-24 pb-16 w-full">
         <div className="grid lg:grid-cols-[61.8fr_38.2fr] gap-12 items-center">
 
-          {/* Left — text */}
+          {/* Left: text */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -137,8 +137,8 @@ export default function Hero() {
 
             {/* Subtext */}
             <motion.p variants={itemVariants} className="text-base sm:text-lg text-slate-400 max-w-xl leading-relaxed">
-              VIMMIK builds precision software for businesses that demand excellence —
-              from enterprise ERP to cloud-native SaaS, engineered to perform at scale.
+              VIMMIK is a software company in Colombo, Sri Lanka. We design and build web platforms,
+              SaaS products and mobile apps, and we run our own products in production.
             </motion.p>
 
             {/* Golden ratio label */}
@@ -154,14 +154,14 @@ export default function Hero() {
             <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
               <button
                 onClick={() => document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-6 py-3 bg-sky hover:bg-[#2d8fd4] text-void font-semibold text-sm transition-colors duration-200 cursor-none"
+                className="px-6 py-3 bg-sky hover:bg-[#0080D6] text-void font-semibold text-sm transition-colors duration-200"
                 style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
               >
                 View Our Work
               </button>
               <button
                 onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-6 py-3 border border-sky/50 text-sky hover:border-sky hover:bg-sky/5 text-sm transition-colors duration-200 cursor-none"
+                className="px-6 py-3 border border-sky/50 text-sky hover:border-sky hover:bg-sky/5 text-sm transition-colors duration-200"
                 style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
               >
                 Contact Us
@@ -169,17 +169,21 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Right — falcon */}
+          {/* Right: falcon */}
           <motion.div
             variants={falconVariants}
             initial="hidden"
             animate="visible"
             className="relative flex items-center justify-center lg:justify-end falcon-float"
             style={{
-              background: 'radial-gradient(ellipse 60% 70% at center, rgba(59,163,232,0.08) 0%, transparent 70%)',
+              background: 'radial-gradient(ellipse 60% 70% at center, rgba(0,148,238,0.08) 0%, transparent 70%)',
             }}
           >
-            <FalconSVG size={420} />
+            <LogoMark
+              size={380}
+              title="VIMMIK"
+              className="w-[min(380px,70vw)] h-auto drop-shadow-[0_0_40px_rgba(0,148,238,0.35)]"
+            />
           </motion.div>
         </div>
       </div>
@@ -191,13 +195,14 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <motion.div
+        aria-hidden="true"
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 opacity-40"
         animate={{ y: [0, 6, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
         <span className="text-[10px] text-sky tracking-[0.3em]" style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}>SCROLL</span>
         <svg width="12" height="18" viewBox="0 0 12 18" fill="none">
-          <path d="M6 0 L6 18 M1 12 L6 18 L11 12" stroke="#3BA3E8" strokeWidth="1"/>
+          <path d="M6 0 L6 18 M1 12 L6 18 L11 12" stroke="#0094EE" strokeWidth="1"/>
         </svg>
       </motion.div>
     </section>

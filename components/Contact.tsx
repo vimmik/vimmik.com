@@ -1,28 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { useRef } from 'react';
-import { CONTACT_PROJECT_TYPES, CONTACT_INFO } from '@/lib/constants';
+import { CONTACT_PROJECT_TYPES, CONTACT_INFO, CONTACT_EMAIL, SOCIAL_LINKS } from '@/lib/constants';
+import { SocialIcon } from './SocialIcon';
 
 const CONTACT_ICONS: Record<string, React.ReactNode> = {
   email: (
     <svg viewBox="0 0 20 20" fill="none" className="w-5 h-5">
-      <rect x="2" y="4" width="16" height="12" rx="2" stroke="#3BA3E8" strokeWidth="1.2"/>
-      <path d="M2 7 L10 12 L18 7" stroke="#3BA3E8" strokeWidth="1.2"/>
+      <rect x="2" y="4" width="16" height="12" rx="2" stroke="#0094EE" strokeWidth="1.2"/>
+      <path d="M2 7 L10 12 L18 7" stroke="#0094EE" strokeWidth="1.2"/>
     </svg>
   ),
   phone: (
     <svg viewBox="0 0 20 20" fill="none" className="w-5 h-5">
       <path d="M4 3 Q4 3 6 3 L7 7 L5 8.5 C5.5 10 8 14.5 10 15 L11.5 13 L15.5 14 Q16 16 16 16 Q16 17 14 17 Q6 16 3 8 Q3 3 4 3Z"
-        stroke="#3BA3E8" strokeWidth="1.2" strokeLinejoin="round"/>
+        stroke="#0094EE" strokeWidth="1.2" strokeLinejoin="round"/>
     </svg>
   ),
   location: (
     <svg viewBox="0 0 20 20" fill="none" className="w-5 h-5">
       <path d="M10 2 C7 2 4 4.5 4 8 C4 13 10 18 10 18 C10 18 16 13 16 8 C16 4.5 13 2 10 2Z"
-        stroke="#3BA3E8" strokeWidth="1.2"/>
-      <circle cx="10" cy="8" r="2.5" stroke="#3BA3E8" strokeWidth="1"/>
+        stroke="#0094EE" strokeWidth="1.2"/>
+      <circle cx="10" cy="8" r="2.5" stroke="#0094EE" strokeWidth="1"/>
     </svg>
   ),
 };
@@ -30,11 +30,11 @@ const CONTACT_ICONS: Record<string, React.ReactNode> = {
 function SignalWave() {
   return (
     <div className="relative flex items-center justify-center w-20 h-20">
-      <div className="absolute w-6 h-6 rounded-full bg-[#3BA3E8]/20 border border-[#3BA3E8]/40" />
-      <div className="ripple-ring absolute w-6 h-6 rounded-full border border-[#3BA3E8]/40" />
-      <div className="ripple-ring absolute w-6 h-6 rounded-full border border-[#3BA3E8]/30" />
-      <div className="ripple-ring absolute w-6 h-6 rounded-full border border-[#3BA3E8]/20" />
-      <div className="w-2 h-2 rounded-full bg-[#3BA3E8] z-10" />
+      <div className="absolute w-6 h-6 rounded-full bg-[#0094EE]/20 border border-[#0094EE]/40" />
+      <div className="ripple-ring absolute w-6 h-6 rounded-full border border-[#0094EE]/40" />
+      <div className="ripple-ring absolute w-6 h-6 rounded-full border border-[#0094EE]/30" />
+      <div className="ripple-ring absolute w-6 h-6 rounded-full border border-[#0094EE]/20" />
+      <div className="w-2 h-2 rounded-full bg-[#0094EE] z-10" />
     </div>
   );
 }
@@ -47,34 +47,79 @@ interface FormState {
   message: string;
 }
 
-type Status = 'idle' | 'loading' | 'success' | 'error';
+type Status = 'idle' | 'loading' | 'success' | 'mailto' | 'error';
+
+const EMPTY_FORM: FormState = { name: '', email: '', company: '', projectType: '', message: '' };
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function mailtoHref(form: FormState) {
+  const subject = `Project enquiry from ${form.name}${form.company ? ` (${form.company})` : ''}`;
+  const body = [
+    `Name: ${form.name}`,
+    `Email: ${form.email}`,
+    form.company && `Company: ${form.company}`,
+    form.projectType && `Project type: ${form.projectType}`,
+    '',
+    form.message,
+  ].filter((l) => l !== '').join('\n');
+  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
 
 const INPUT_BASE =
-  'w-full bg-[#0D1B2A]/60 border border-[#3BA3E8]/20 text-slate-200 text-sm px-4 py-3 outline-none focus:border-[#3BA3E8]/60 focus:bg-[#3BA3E8]/5 transition-all duration-200 placeholder:text-slate-600 cursor-none';
+  'w-full bg-[#0A1A33]/60 border border-[#0094EE]/20 text-slate-200 text-sm px-4 py-3 outline-none focus:border-[#0094EE]/60 focus:bg-[#0094EE]/5 transition-all duration-200 placeholder:text-slate-600';
 
 export default function Contact() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
-  const [form, setForm] = useState<FormState>({
-    name: '', email: '', company: '', projectType: '', message: '',
-  });
+  const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [status, setStatus] = useState<Status>('idle');
+  const [error, setError] = useState('');
+  const [honeypot, setHoneypot] = useState('');
 
   const update = (field: keyof FormState) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
-  const handleSubmit = () => {
-    if (!form.name || !form.email || !form.message) {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (status === 'loading') return;
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      setError('// Please fill in name, email, and message.');
       setStatus('error');
       return;
     }
+    if (!EMAIL_RE.test(form.email.trim())) {
+      setError('// Please enter a valid email address.');
+      setStatus('error');
+      return;
+    }
+
     setStatus('loading');
-    setTimeout(() => {
-      setStatus('success');
-      setForm({ name: '', email: '', company: '', projectType: '', message: '' });
-    }, 1400);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, website: honeypot }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setStatus('success');
+        setForm(EMPTY_FORM);
+        return;
+      }
+      if (json.fallback === 'mailto') {
+        // Server can't deliver email: hand the message to the visitor's mail app instead.
+        window.location.href = mailtoHref(form);
+        setStatus('mailto');
+        return;
+      }
+      setError(`// ${json.error ?? 'Something went wrong. Please try again.'}`);
+      setStatus('error');
+    } catch {
+      setError(`// Network error. Please try again or email ${CONTACT_EMAIL}.`);
+      setStatus('error');
+    }
   };
 
   return (
@@ -88,9 +133,9 @@ export default function Contact() {
             transition={{ duration: 0.5 }}
             className="flex items-center gap-3 mb-4"
           >
-            <span className="h-px w-12 bg-[#3BA3E8]/50" />
+            <span className="h-px w-12 bg-[#0094EE]/50" />
             <span
-              className="text-xs text-[#3BA3E8] tracking-[0.3em] uppercase"
+              className="text-xs text-[#0094EE] tracking-[0.3em] uppercase"
               style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
             >
               INITIATE
@@ -109,24 +154,34 @@ export default function Contact() {
 
         <div className="grid lg:grid-cols-[61.8fr_38.2fr] gap-16">
 
-          {/* Left — form */}
+          {/* Left: form */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col gap-5"
           >
+          <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5" aria-describedby="contact-status">
+            {/* Honeypot: hidden from people, tempting to bots */}
+            <div className="absolute -left-[9999px]" aria-hidden="true">
+              <label htmlFor="contact-website">Website</label>
+              <input id="contact-website" name="website" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
+            </div>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
                 <label
-                  className="text-xs text-slate-500 tracking-[0.2em]"
+                  htmlFor="contact-name"
+                  className="text-xs text-slate-400 tracking-[0.2em]"
                   style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
                 >
-                  NAME *
+                  NAME <span aria-hidden="true">*</span>
                 </label>
                 <input
                   type="text"
+                  id="contact-name"
+                  name="name"
+                  required
+                  autoComplete="name"
                   value={form.name}
                   onChange={update('name')}
                   placeholder="John Smith"
@@ -136,13 +191,18 @@ export default function Contact() {
               </div>
               <div className="flex flex-col gap-1.5">
                 <label
-                  className="text-xs text-slate-500 tracking-[0.2em]"
+                  htmlFor="contact-email"
+                  className="text-xs text-slate-400 tracking-[0.2em]"
                   style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
                 >
-                  EMAIL *
+                  EMAIL <span aria-hidden="true">*</span>
                 </label>
                 <input
                   type="email"
+                  id="contact-email"
+                  name="email"
+                  required
+                  autoComplete="email"
                   value={form.email}
                   onChange={update('email')}
                   placeholder="you@company.com"
@@ -155,13 +215,17 @@ export default function Contact() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
                 <label
-                  className="text-xs text-slate-500 tracking-[0.2em]"
+                  htmlFor="contact-company"
+                  className="text-xs text-slate-400 tracking-[0.2em]"
                   style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
                 >
                   COMPANY
                 </label>
                 <input
                   type="text"
+                  id="contact-company"
+                  name="company"
+                  autoComplete="organization"
                   value={form.company}
                   onChange={update('company')}
                   placeholder="Acme Corporation"
@@ -171,20 +235,23 @@ export default function Contact() {
               </div>
               <div className="flex flex-col gap-1.5">
                 <label
-                  className="text-xs text-slate-500 tracking-[0.2em]"
+                  htmlFor="contact-projectType"
+                  className="text-xs text-slate-400 tracking-[0.2em]"
                   style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
                 >
                   PROJECT TYPE
                 </label>
                 <select
+                  id="contact-projectType"
+                  name="projectType"
                   value={form.projectType}
                   onChange={update('projectType')}
                   className={`${INPUT_BASE} appearance-none`}
                   style={{ fontFamily: 'var(--font-dm-sans)' }}
                 >
-                  <option value="" className="bg-[#0D1B2A]">Select a type</option>
+                  <option value="" className="bg-[#0A1A33]">Select a type</option>
                   {CONTACT_PROJECT_TYPES.map((t) => (
-                    <option key={t} value={t} className="bg-[#0D1B2A]">{t}</option>
+                    <option key={t} value={t} className="bg-[#0A1A33]">{t}</option>
                   ))}
                 </select>
               </div>
@@ -192,13 +259,17 @@ export default function Contact() {
 
             <div className="flex flex-col gap-1.5">
               <label
-                className="text-xs text-slate-500 tracking-[0.2em]"
+                htmlFor="contact-message"
+                className="text-xs text-slate-400 tracking-[0.2em]"
                 style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
               >
-                MESSAGE *
+                MESSAGE <span aria-hidden="true">*</span>
               </label>
               <textarea
-                value={form.message}
+                id="contact-message"
+                name="message"
+                required
+                  value={form.message}
                 onChange={update('message')}
                 placeholder="Describe your project, goals, and timeline..."
                 rows={5}
@@ -207,7 +278,8 @@ export default function Contact() {
               />
             </div>
 
-            {/* Error */}
+            {/* Status: announced to screen readers */}
+            <div id="contact-status" role="status" aria-live="polite">
             <AnimatePresence>
               {status === 'error' && (
                 <motion.p
@@ -217,10 +289,23 @@ export default function Contact() {
                   className="text-xs text-red-400/80"
                   style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
                 >
-                  {'// Please fill in name, email, and message.'}
+                  {error}
+                </motion.p>
+              )}
+              {status === 'mailto' && (
+                <motion.p
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="text-xs text-slate-300"
+                  style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
+                >
+                  {'// Your email app should open with the message ready to send. If it didn\'t, write to '}
+                  <a href={mailtoHref(form)} className="text-[#0094EE] underline">{CONTACT_EMAIL}</a>.
                 </motion.p>
               )}
             </AnimatePresence>
+            </div>
 
             {/* Submit */}
             <AnimatePresence mode="wait">
@@ -229,23 +314,24 @@ export default function Contact() {
                   key="success"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-3 text-sm text-[#3BA3E8] border border-[#3BA3E8]/30 bg-[#3BA3E8]/5 px-5 py-3"
+                  className="flex items-center gap-3 text-sm text-[#0094EE] border border-[#0094EE]/30 bg-[#0094EE]/5 px-5 py-3"
                   style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
                 >
                   <svg viewBox="0 0 20 20" fill="none" className="w-5 h-5 shrink-0">
-                    <circle cx="10" cy="10" r="8" stroke="#3BA3E8" strokeWidth="1.2"/>
-                    <path d="M6 10 L9 13 L14 7" stroke="#3BA3E8" strokeWidth="1.5" strokeLinecap="round"/>
+                    <circle cx="10" cy="10" r="8" stroke="#0094EE" strokeWidth="1.2"/>
+                    <path d="M6 10 L9 13 L14 7" stroke="#0094EE" strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
-                  Transmission received. We&apos;ll be in touch shortly.
+                  Message sent. Thank you, we&apos;ll reply by email.
                 </motion.div>
               ) : (
                 <motion.div key="btn">
-                  <div
-                    onClick={status !== 'loading' ? handleSubmit : undefined}
-                    className={`inline-flex items-center gap-3 px-6 py-3 text-sm font-semibold transition-all duration-200 cursor-none ${
+                  <button
+                    type="submit"
+                    disabled={status === 'loading'}
+                    className={`inline-flex items-center gap-3 px-6 py-3 text-sm font-semibold transition-all duration-200 ${
                       status === 'loading'
-                        ? 'bg-[#3BA3E8]/50 text-[#080F17]/70 cursor-not-allowed'
-                        : 'bg-[#3BA3E8] hover:bg-[#2d8fd4] text-[#080F17]'
+                        ? 'bg-[#0094EE]/50 text-[#050C1A]/70 cursor-not-allowed'
+                        : 'bg-[#0094EE] hover:bg-[#0080D6] text-[#050C1A]'
                     }`}
                     style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
                   >
@@ -254,20 +340,21 @@ export default function Contact() {
                         <motion.span
                           animate={{ rotate: 360 }}
                           transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
-                          className="inline-block w-4 h-4 border-2 border-[#080F17]/30 border-t-[#080F17] rounded-full"
+                          className="inline-block w-4 h-4 border-2 border-[#050C1A]/30 border-t-[#050C1A] rounded-full"
                         />
                         Transmitting...
                       </>
                     ) : (
                       'Send Message →'
                     )}
-                  </div>
+                  </button>
                 </motion.div>
               )}
             </AnimatePresence>
+          </form>
           </motion.div>
 
-          {/* Right — contact info + signal */}
+          {/* Right: contact info + signal */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -280,41 +367,63 @@ export default function Contact() {
               <SignalWave />
               <div>
                 <div
-                  className="text-xs text-[#3BA3E8]/60 tracking-[0.25em] mb-1"
+                  className="text-xs text-[#0094EE]/60 tracking-[0.25em] mb-1"
                   style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
                 >
                   TRANSMISSION READY
                 </div>
                 <p className="text-sm text-slate-400">
-                  Our team responds within 24 hours on business days.
+                  We read every enquiry and reply by email.
                 </p>
               </div>
             </div>
 
             {/* Contact cards */}
             <div className="flex flex-col gap-3">
-              {CONTACT_INFO.map((info) => (
-                <div
+              {CONTACT_INFO.map((info) => {
+                const Tag = info.href ? 'a' : 'div';
+                return (
+                <Tag
                   key={info.label}
-                  className="flex items-center gap-4 p-4 border border-[#3BA3E8]/15 bg-[#0D1B2A]/40"
+                  {...(info.href ? { href: info.href } : {})}
+                  className="flex items-center gap-4 p-4 border border-[#0094EE]/15 bg-[#0A1A33]/40 transition-colors duration-200 hover:border-[#0094EE]/50"
                 >
                   <div className="shrink-0">{CONTACT_ICONS[info.icon]}</div>
                   <div>
                     <div
-                      className="text-[10px] text-[#3BA3E8]/50 tracking-[0.25em] mb-0.5"
+                      className="text-[10px] text-[#0094EE]/70 tracking-[0.25em] mb-0.5"
                       style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
                     >
                       {info.label.toUpperCase()}
                     </div>
                     <div className="text-sm text-slate-300">{info.value}</div>
                   </div>
-                </div>
+                </Tag>
+                );
+              })}
+            </div>
+
+            {/* Social */}
+            <div className="flex flex-wrap gap-3">
+              {SOCIAL_LINKS.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-3 py-2 text-xs text-slate-400 border border-[#0094EE]/15 hover:text-[#0094EE] hover:border-[#0094EE]/50 transition-colors duration-200"
+                  style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
+                >
+                  <SocialIcon name={social.icon} size={14} />
+                  {social.label}
+                  <span className="sr-only">(opens in a new tab)</span>
+                </a>
               ))}
             </div>
 
             {/* Tagline */}
             <div
-              className="text-xs text-[#3BA3E8]/25 tracking-[0.2em] leading-relaxed border-t border-[#3BA3E8]/10 pt-6"
+              className="text-xs text-[#0094EE]/25 tracking-[0.2em] leading-relaxed border-t border-[#0094EE]/10 pt-6"
               style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
             >
               VIMMIK // SRI LANKA<br/>

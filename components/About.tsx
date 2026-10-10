@@ -14,11 +14,11 @@ function BlueprintGrid() {
     >
       <defs>
         <pattern id="bp-small" width="20" height="20" patternUnits="userSpaceOnUse">
-          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#3BA3E8" strokeWidth="0.5"/>
+          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#0094EE" strokeWidth="0.5"/>
         </pattern>
         <pattern id="bp-large" width="100" height="100" patternUnits="userSpaceOnUse">
           <rect width="100" height="100" fill="url(#bp-small)"/>
-          <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#3BA3E8" strokeWidth="1"/>
+          <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#0094EE" strokeWidth="1"/>
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#bp-large)"/>
@@ -28,9 +28,9 @@ function BlueprintGrid() {
 
 
 const PILLARS = [
-  { label: 'PRECISION', desc: 'Every line of code is deliberate — no waste, no shortcuts.' },
+  { label: 'PRECISION', desc: 'Every line of code is deliberate. No waste, no shortcuts.' },
   { label: 'VELOCITY', desc: 'We move fast without sacrificing quality or stability.' },
-  { label: 'ALTITUDE', desc: 'We build for the long game — systems that outlast trends.' },
+  { label: 'ALTITUDE', desc: 'We build for the long game: systems that outlast trends.' },
 ];
 
 export default function About() {
@@ -81,7 +81,7 @@ export default function About() {
         {/* 61.8 / 38.2 golden ratio split */}
         <div className="grid lg:grid-cols-[61.8fr_38.2fr] gap-16 items-start">
 
-          {/* Left — text */}
+          {/* Left: text */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -90,10 +90,10 @@ export default function About() {
             className="flex flex-col gap-8"
           >
             <motion.p variants={itemVariants} className="text-lg text-slate-300 leading-relaxed">
-              VIMMIK is a Sri Lankan software engineering company specialising in enterprise-grade solutions
-              that power business operations at scale. Founded on the principle that software should be
-              as reliable as it is innovative, we partner with organisations to build the systems their
-              futures depend on.
+              VIMMIK is a software engineering company based in Colombo, Sri Lanka. We build our own
+              products, like MediChainLK for pharmacies and Kotasa for shared expenses, and we bring the
+              same engineering to client work: business systems, SaaS platforms and mobile apps that are
+              built to be reliable first.
             </motion.p>
 
             {/* Falcon quote */}
@@ -102,19 +102,19 @@ export default function About() {
               className="border-l-2 border-sky/60 pl-6 py-2"
             >
               <p className="text-xl text-white font-medium leading-relaxed italic">
-                &quot;Like the falcon — the fastest animal on earth — we deliver with
-                unmatched speed and precision.&quot;
+                &quot;Like the falcon, the fastest animal on earth, we aim to move
+                with speed and precision.&quot;
               </p>
               <footer
                 className="mt-3 text-xs text-sky/60 tracking-[0.2em]"
                 style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
               >
-                — THE VIMMIK PRINCIPLE
+                THE VIMMIK PRINCIPLE
               </footer>
             </motion.blockquote>
 
             <motion.p variants={itemVariants} className="text-slate-400 leading-relaxed">
-              The falcon is not merely our symbol — it is our operating philosophy. The Peregrine Falcon
+              The falcon is not merely our symbol. It is our operating philosophy. The Peregrine Falcon
               reaches 390 km/h in a dive, combining aerodynamic engineering with biological precision.
               We apply that same fusion of structure and speed to every platform we ship.
             </motion.p>
@@ -138,7 +138,7 @@ export default function About() {
             </motion.div>
           </motion.div>
 
-          {/* Right — falcon */}
+          {/* Right: falcon */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -146,7 +146,7 @@ export default function About() {
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="relative flex items-center justify-center falcon-float"
             style={{
-              background: 'radial-gradient(ellipse 60% 70% at center, rgba(59,163,232,0.08) 0%, transparent 70%)',
+              background: 'radial-gradient(ellipse 60% 70% at center, rgba(0,148,238,0.08) 0%, transparent 70%)',
             }}
           >
             <FalconSVG size={380} />
@@ -166,10 +166,10 @@ export default function About() {
       <div className="mt-24 pcb-divider" aria-hidden="true">
         <svg viewBox="0 0 1440 24" fill="none" className="w-full">
           <path d="M0 12 H220 L240 4 H420 L440 12 H700 L720 20 H860 L880 12 H1080 L1100 4 H1260 L1280 12 H1440"
-            stroke="rgba(59,163,232,0.2)" strokeWidth="1"/>
-          <circle cx="220" cy="12" r="2" fill="rgba(59,163,232,0.35)"/>
-          <circle cx="700" cy="12" r="2" fill="rgba(59,163,232,0.35)"/>
-          <circle cx="1080" cy="12" r="2" fill="rgba(59,163,232,0.35)"/>
+            stroke="rgba(0,148,238,0.2)" strokeWidth="1"/>
+          <circle cx="220" cy="12" r="2" fill="rgba(0,148,238,0.35)"/>
+          <circle cx="700" cy="12" r="2" fill="rgba(0,148,238,0.35)"/>
+          <circle cx="1080" cy="12" r="2" fill="rgba(0,148,238,0.35)"/>
         </svg>
       </div>
     </section>
