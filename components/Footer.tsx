@@ -1,15 +1,8 @@
 'use client';
 
-function FalconLogo() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-      <polygon points="14,2 22,10 18,12 26,20 14,16 2,20 10,12 6,10" fill="none" stroke="#3BA3E8" strokeWidth="1.2" strokeLinejoin="round"/>
-      <polygon points="14,2 18,12 14,10 10,12" fill="rgba(59,163,232,0.3)" strokeLinejoin="round"/>
-      <polygon points="14,10 18,12 14,16 10,12" fill="rgba(59,163,232,0.15)" strokeLinejoin="round"/>
-      <circle cx="18" cy="7" r="1.2" fill="#3BA3E8"/>
-    </svg>
-  );
-}
+import { LogoMark } from './Logo';
+import { CONTACT_INFO, SOCIAL_LINKS } from '@/lib/constants';
+import { SocialIcon } from './SocialIcon';
 
 const QUICK_LINKS = [
   { label: 'Services', href: '#services' },
@@ -29,14 +22,14 @@ const SERVICES_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#060D13] border-t border-[#3BA3E8]/10">
+    <footer className="bg-[#040A15] border-t border-[#0094EE]/10">
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
 
           {/* Brand */}
           <div className="lg:col-span-1 flex flex-col gap-4">
             <div className="flex items-center gap-2.5">
-              <FalconLogo />
+              <LogoMark size={26} />
               <span
                 className="text-white font-bold tracking-[0.2em] text-base"
                 style={{ fontFamily: 'var(--font-orbitron)' }}
@@ -48,14 +41,14 @@ export default function Footer() {
               Precision enterprise software engineered in Sri Lanka.
             </p>
             <div
-              className="text-xs text-[#3BA3E8]/40 tracking-[0.2em]"
+              className="text-xs text-[#0094EE]/40 tracking-[0.2em]"
               style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
             >
               FOR YOUR SMART FUTURE
             </div>
             {/* Phi decoration */}
             <div
-              className="text-4xl text-[#3BA3E8]/8 font-bold mt-2 select-none"
+              className="text-4xl text-[#0094EE]/8 font-bold mt-2 select-none"
               style={{ fontFamily: 'var(--font-orbitron)' }}
               aria-hidden="true"
             >
@@ -66,7 +59,7 @@ export default function Footer() {
           {/* Quick links */}
           <div>
             <h3
-              className="text-xs text-[#3BA3E8]/60 tracking-[0.25em] mb-5 uppercase"
+              className="text-xs text-[#0094EE]/60 tracking-[0.25em] mb-5 uppercase"
               style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
             >
               Navigate
@@ -80,9 +73,9 @@ export default function Footer() {
                       e.preventDefault();
                       document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="text-sm text-slate-500 hover:text-[#3BA3E8] transition-colors duration-200 flex items-center gap-2 group cursor-none"
+                    className="text-sm text-slate-500 hover:text-[#0094EE] transition-colors duration-200 flex items-center gap-2 group"
                   >
-                    <span className="w-0 h-px bg-[#3BA3E8] transition-all duration-300 group-hover:w-3" />
+                    <span className="w-0 h-px bg-[#0094EE] transition-all duration-300 group-hover:w-3" />
                     {link.label}
                   </a>
                 </li>
@@ -93,7 +86,7 @@ export default function Footer() {
           {/* Services */}
           <div>
             <h3
-              className="text-xs text-[#3BA3E8]/60 tracking-[0.25em] mb-5 uppercase"
+              className="text-xs text-[#0094EE]/60 tracking-[0.25em] mb-5 uppercase"
               style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
             >
               Services
@@ -107,9 +100,9 @@ export default function Footer() {
                       e.preventDefault();
                       document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
                     }}
-                    className="text-sm text-slate-500 hover:text-[#3BA3E8] transition-colors duration-200 flex items-center gap-2 group cursor-none"
+                    className="text-sm text-slate-500 hover:text-[#0094EE] transition-colors duration-200 flex items-center gap-2 group"
                   >
-                    <span className="w-0 h-px bg-[#3BA3E8] transition-all duration-300 group-hover:w-3" />
+                    <span className="w-0 h-px bg-[#0094EE] transition-all duration-300 group-hover:w-3" />
                     {link.label}
                   </a>
                 </li>
@@ -120,7 +113,7 @@ export default function Footer() {
           {/* Contact CTA */}
           <div>
             <h3
-              className="text-xs text-[#3BA3E8]/60 tracking-[0.25em] mb-5 uppercase"
+              className="text-xs text-[#0094EE]/60 tracking-[0.25em] mb-5 uppercase"
               style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
             >
               Start a Project
@@ -134,32 +127,56 @@ export default function Footer() {
                 e.preventDefault();
                 document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="inline-block px-4 py-2 text-xs text-[#3BA3E8] border border-[#3BA3E8]/40 hover:bg-[#3BA3E8]/5 hover:border-[#3BA3E8]/70 transition-colors duration-200 cursor-none"
+              className="inline-block px-4 py-2 text-xs text-[#0094EE] border border-[#0094EE]/40 hover:bg-[#0094EE]/5 hover:border-[#0094EE]/70 transition-colors duration-200"
               style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
             >
               Get a Quote →
             </a>
 
-            <div
-              className="mt-6 text-xs text-slate-600 leading-loose"
+            <ul
+              className="mt-6 flex flex-col gap-1.5 text-xs text-slate-500"
               style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
             >
-              hello@vimmik.com<br/>
-              Colombo, Sri Lanka
+              {CONTACT_INFO.map((info) => (
+                <li key={info.label}>
+                  {info.href ? (
+                    <a href={info.href} className="hover:text-[#0094EE] transition-colors duration-200">
+                      {info.value}
+                    </a>
+                  ) : (
+                    info.value
+                  )}
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-6 flex items-center gap-3">
+              {SOCIAL_LINKS.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`VIMMIK on ${social.label}`}
+                  className="w-9 h-9 flex items-center justify-center border border-[#0094EE]/20 text-slate-400 hover:text-[#0094EE] hover:border-[#0094EE]/60 transition-colors duration-200"
+                >
+                  <SocialIcon name={social.icon} />
+                </a>
+              ))}
             </div>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-[#3BA3E8]/8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="border-t border-[#0094EE]/8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p
             className="text-xs text-slate-600"
             style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
           >
-            © 2025 VIMMIK. Engineered in Sri Lanka.
+            © {new Date().getFullYear()} VIMMIK. Engineered in Sri Lanka.
           </p>
           <div
-            className="text-xs text-[#3BA3E8]/20 tracking-[0.2em]"
+            className="text-xs text-[#0094EE]/20 tracking-[0.2em]"
             style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
           >
             φ = 1.618 // FOR YOUR SMART FUTURE

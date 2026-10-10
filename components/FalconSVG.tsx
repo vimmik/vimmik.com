@@ -1,5 +1,6 @@
 'use client';
 
+import { useId } from 'react';
 import { motion } from 'framer-motion';
 
 interface FalconSVGProps {
@@ -7,19 +8,19 @@ interface FalconSVGProps {
 }
 
 /*
- * Advanced low-poly Peregrine Falcon — upright soaring pose.
+ * Advanced low-poly Peregrine Falcon: upright soaring pose.
  *
  * Coordinate space: 680×720 (viewBox), rendered at `size` px square.
  * Structure:
- *   Head + neck — 9 facets, beak pointing right
- *   Body        — 11 torso facets, torpedo shape
- *   Wings       — right: 7 panels sweeping outward
+ *   Head + neck: 9 facets, beak pointing right
+ *   Body       : 11 torso facets, torpedo shape
+ *   Wings      : right: 7 panels sweeping outward
  *                  left:  7 mirror panels
- *   Tail        — 5 forked feather polygons
- *   Talons      — 6 small polygons
+ *   Tail       : 5 forked feather polygons
+ *   Talons     : 6 small polygons
  *
  * Fill: deep navy facets with per-face rgba variation.
- * Stroke: #3BA3E8 at variable opacity.
+ * Stroke: #0094EE at variable opacity.
  * Extras: hex-grid background, glow filter, halo rings,
  *         crosshair guides, eye pulse, particle dots + constellation.
  */
@@ -134,7 +135,7 @@ function PolyGroup({ polys, groupIdx }: { polys: Poly[]; groupIdx: number }) {
           key={`g${groupIdx}-${i}`}
           points={pts}
           fill={fill}
-          stroke="#3BA3E8"
+          stroke="#0094EE"
           strokeWidth="1"
           strokeOpacity={sOpacity}
           strokeLinejoin="round"
@@ -148,7 +149,7 @@ function PolyGroup({ polys, groupIdx }: { polys: Poly[]; groupIdx: number }) {
 }
 
 export default function FalconSVG({ size = 420 }: FalconSVGProps) {
-  const uid = size === 420 ? 'hero' : 'about';
+  const uid = `falcon${useId()}`;
   const totalPolys = ALL_GROUPS.reduce((s, g) => s + g.length, 0);
   const eyeDelay = totalPolys * 0.04 + 0.1;
 
@@ -159,15 +160,15 @@ export default function FalconSVG({ size = 420 }: FalconSVGProps) {
       viewBox="0 0 680 720"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="VIMMIK falcon mascot — low-poly geometric illustration"
+      aria-label="VIMMIK falcon mascot, a low-poly geometric illustration"
       style={{
-        filter: 'drop-shadow(0 0 18px rgba(59,163,232,0.35)) drop-shadow(0 0 6px rgba(59,163,232,0.20))',
+        filter: 'drop-shadow(0 0 18px rgba(0,148,238,0.35)) drop-shadow(0 0 6px rgba(0,148,238,0.20))',
         maxWidth: '100%',
         height: 'auto',
       }}
       whileHover={{
         scale: 1.05,
-        filter: 'drop-shadow(0 0 28px rgba(59,163,232,0.65)) drop-shadow(0 0 10px rgba(59,163,232,0.40))',
+        filter: 'drop-shadow(0 0 28px rgba(0,148,238,0.65)) drop-shadow(0 0 10px rgba(0,148,238,0.40))',
       }}
       transition={{ type: 'spring', stiffness: 220, damping: 20 }}
     >
@@ -176,13 +177,13 @@ export default function FalconSVG({ size = 420 }: FalconSVGProps) {
           <path
             d="M16 0 L32 9 L32 27 L16 36 L0 27 L0 9 Z"
             fill="none"
-            stroke="rgba(59,163,232,0.10)"
+            stroke="rgba(0,148,238,0.10)"
             strokeWidth="0.6"
           />
           <path
             d="M16 36 L16 55 M32 27 L48 36 M0 27 L-16 36"
             fill="none"
-            stroke="rgba(59,163,232,0.07)"
+            stroke="rgba(0,148,238,0.07)"
             strokeWidth="0.6"
           />
         </pattern>
@@ -201,20 +202,20 @@ export default function FalconSVG({ size = 420 }: FalconSVGProps) {
         </filter>
       </defs>
 
-      {/* Transparent background — page bg shows through */}
+      {/* Transparent background: page bg shows through */}
 
       {/* Halo rings */}
-      <circle cx="340" cy="340" r="290" stroke="#3BA3E8" strokeWidth="0.8" strokeOpacity="0.15" fill="none"/>
-      <circle cx="340" cy="340" r="260" stroke="#3BA3E8" strokeWidth="0.4" strokeDasharray="4 10" strokeOpacity="0.08" fill="none"/>
-      <circle cx="340" cy="340" r="220" stroke="#3BA3E8" strokeWidth="0.3" strokeDasharray="2 14" strokeOpacity="0.06" fill="none"/>
+      <circle cx="340" cy="340" r="290" stroke="#0094EE" strokeWidth="0.8" strokeOpacity="0.15" fill="none"/>
+      <circle cx="340" cy="340" r="260" stroke="#0094EE" strokeWidth="0.4" strokeDasharray="4 10" strokeOpacity="0.08" fill="none"/>
+      <circle cx="340" cy="340" r="220" stroke="#0094EE" strokeWidth="0.3" strokeDasharray="2 14" strokeOpacity="0.06" fill="none"/>
 
       {/* Crosshair guides */}
-      <line x1="340" y1="60"  x2="340" y2="100" stroke="#3BA3E8" strokeWidth="0.5" strokeOpacity="0.20"/>
-      <line x1="340" y1="580" x2="340" y2="620" stroke="#3BA3E8" strokeWidth="0.5" strokeOpacity="0.20"/>
-      <line x1="60"  y1="340" x2="100" y2="340" stroke="#3BA3E8" strokeWidth="0.5" strokeOpacity="0.20"/>
-      <line x1="580" y1="340" x2="620" y2="340" stroke="#3BA3E8" strokeWidth="0.5" strokeOpacity="0.20"/>
+      <line x1="340" y1="60"  x2="340" y2="100" stroke="#0094EE" strokeWidth="0.5" strokeOpacity="0.20"/>
+      <line x1="340" y1="580" x2="340" y2="620" stroke="#0094EE" strokeWidth="0.5" strokeOpacity="0.20"/>
+      <line x1="60"  y1="340" x2="100" y2="340" stroke="#0094EE" strokeWidth="0.5" strokeOpacity="0.20"/>
+      <line x1="580" y1="340" x2="620" y2="340" stroke="#0094EE" strokeWidth="0.5" strokeOpacity="0.20"/>
 
-      {/* Polygon groups — render order: tail → wings → body → neck → head → beak → talons */}
+      {/* Polygon groups: render order: tail → wings → body → neck → head → beak → talons */}
       <PolyGroup polys={TAIL}       groupIdx={0}/>
       <PolyGroup polys={RIGHT_WING} groupIdx={1}/>
       <PolyGroup polys={LEFT_WING}  groupIdx={2}/>
@@ -225,12 +226,12 @@ export default function FalconSVG({ size = 420 }: FalconSVGProps) {
       <PolyGroup polys={TALONS}     groupIdx={7}/>
 
       {/* Eye */}
-      <ellipse cx="362" cy="106" rx="11" ry="9" fill="none" stroke="#3BA3E8" strokeWidth="1.5" strokeOpacity="0.90"/>
-      <ellipse cx="362" cy="106" rx="8"  ry="7" fill="rgba(20,42,72,0.60)" stroke="#3BA3E8" strokeWidth="0.8" strokeOpacity="0.50"/>
+      <ellipse cx="362" cy="106" rx="11" ry="9" fill="none" stroke="#0094EE" strokeWidth="1.5" strokeOpacity="0.90"/>
+      <ellipse cx="362" cy="106" rx="8"  ry="7" fill="rgba(20,42,72,0.60)" stroke="#0094EE" strokeWidth="0.8" strokeOpacity="0.50"/>
       <motion.circle
         cx={362} cy={106} r="5.5"
         fill="rgba(8,16,28,0.95)"
-        stroke="#3BA3E8" strokeWidth="0.6" strokeOpacity="0.70"
+        stroke="#0094EE" strokeWidth="0.6" strokeOpacity="0.70"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: eyeDelay, duration: 0.3 }}
@@ -242,9 +243,9 @@ export default function FalconSVG({ size = 420 }: FalconSVGProps) {
         animate={{ opacity: 1 }}
         transition={{ delay: eyeDelay + 0.1, duration: 0.2 }}
       />
-      <circle cx="364" cy="103" r="1.2" fill="rgba(59,163,232,0.85)"/>
+      <circle cx="364" cy="103" r="1.2" fill="rgba(0,148,238,0.85)"/>
       {/* Eye pulse ring */}
-      <circle cx="362" cy="106" r="9" fill="none" stroke="rgba(59,163,232,0.5)" strokeWidth="0.8">
+      <circle cx="362" cy="106" r="9" fill="none" stroke="rgba(0,148,238,0.5)" strokeWidth="0.8">
         <animate attributeName="r"       values="9;16;9"   dur="3s"  repeatCount="indefinite"/>
         <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite"/>
       </circle>
@@ -254,7 +255,7 @@ export default function FalconSVG({ size = 420 }: FalconSVGProps) {
         <motion.circle
           key={`pt-${i}`}
           cx={p.cx} cy={p.cy} r={p.r}
-          fill="#3BA3E8"
+          fill="#0094EE"
           initial={{ opacity: 0 }}
           animate={{ opacity: p.opacity }}
           transition={{ delay: 0.8 + i * 0.1, duration: 0.5 }}
@@ -274,9 +275,9 @@ export default function FalconSVG({ size = 420 }: FalconSVGProps) {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 0.8 }}
       >
-        <line x1="100" y1="100" x2="70"  y2="420" stroke="rgba(59,163,232,0.08)" strokeWidth="0.7" strokeDasharray="3 6"/>
-        <line x1="580" y1="130" x2="620" y2="400" stroke="rgba(59,163,232,0.08)" strokeWidth="0.7" strokeDasharray="3 6"/>
-        <line x1="190" y1="620" x2="500" y2="600" stroke="rgba(59,163,232,0.06)" strokeWidth="0.6" strokeDasharray="3 8"/>
+        <line x1="100" y1="100" x2="70"  y2="420" stroke="rgba(0,148,238,0.08)" strokeWidth="0.7" strokeDasharray="3 6"/>
+        <line x1="580" y1="130" x2="620" y2="400" stroke="rgba(0,148,238,0.08)" strokeWidth="0.7" strokeDasharray="3 6"/>
+        <line x1="190" y1="620" x2="500" y2="600" stroke="rgba(0,148,238,0.06)" strokeWidth="0.6" strokeDasharray="3 8"/>
       </motion.g>
     </motion.svg>
   );

@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+<img src="public/brand/vimmik-mark.png" alt="VIMMIK logo" width="96" height="96" />
 
-First, run the development server:
+# VIMMIK
+
+**For Your Smart Future**
+
+Company website for VIMMIK, a software company in Colombo, Sri Lanka.
+Live at [vimmik.vercel.app](https://vimmik.vercel.app).
+
+</div>
+
+## Stack
+
+Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4 and Framer Motion, deployed on Vercel.
+
+## Development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+cp .env.example .env.local   # optional, see below
+pnpm dev                     # http://localhost:3000
+pnpm lint
+pnpm build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contact form
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The form posts to `app/api/contact/route.ts`, which emails each enquiry through [Resend](https://resend.com).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Purpose |
+| --- | --- |
+| `RESEND_API_KEY` | Resend API key. Without it the form opens the visitor's email app, pre-filled to `info@vimmik.com`. |
+| `CONTACT_TO_EMAIL` | Inbox that receives enquiries. Defaults to `info@vimmik.com`. |
+| `CONTACT_FROM_EMAIL` | Sender on a domain verified in Resend, e.g. `VIMMIK Website <web@vimmik.com>`. |
+| `NEXT_PUBLIC_SITE_URL` | Public URL used for canonical links, the sitemap and social previews. |
 
-## Learn More
+Set these in Vercel under Project Settings, Environment Variables.
 
-To learn more about Next.js, take a look at the following resources:
+## Content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Most copy lives in `lib/constants.ts`: services, stats, tech stack, projects, contact details and social links.
+Projects are taken from the public repositories at [github.com/vimmik](https://github.com/vimmik).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Brand
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Mark: `components/Logo.tsx` (SVG traced from `public/mainlogo.jpeg`)
+- Colours: blue `#0094EE`, navy `#002D68`, site background `#050C1A`
+- PNG exports: `public/brand/`; favicon, app icons and social image: `app/`
