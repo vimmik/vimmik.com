@@ -1,0 +1,10 @@
+/* VIMMIK brand colours */
+:root {
+  --vimmik-falcon-blue: #0094EE; /* accent, the falcon, links */
+  --vimmik-brand-navy:  #002D68; /* the V on light backgrounds */
+  --vimmik-void:        #050C1A; /* main dark background */
+  --vimmik-surface:     #0A1A33; /* cards and panels on dark */
+  --vimmik-ice:         #E6F1FB; /* the V on dark, light panels */
+  --vimmik-charcoal:    #323337; /* wordmark and text on light */
+  --vimmik-slate:       #94A3B8; /* secondary text on dark */
+}
