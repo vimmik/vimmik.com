@@ -41,7 +41,7 @@ Set these in Vercel under Project Settings, Environment Variables.
 ## Content
 
 Most copy lives in `lib/constants.ts`: services, stats, tech stack, projects, contact details and social links.
-Projects are taken from the public repositories at [github.com/vimmik](https://github.com/vimmik).
+Project entries reflect our shipped products; no links to our source repositories are published on the site.
 
 ## Brand
 

@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   title: 'VIMMIK | For Your Smart Future',
   description: DESCRIPTION,
   keywords: ['software company', 'Sri Lanka', 'Colombo', 'SaaS', 'web development', 'mobile apps', 'MediChainLK', 'Kotasa', 'VIMMIK'],
-  authors: [{ name: 'VIMMIK', url: 'https://github.com/vimmik' }],
+  authors: [{ name: 'VIMMIK' }],
   alternates: { canonical: '/' },
   openGraph: {
     title: 'VIMMIK | For Your Smart Future',
