@@ -45,7 +45,7 @@ export const SERVICES = [
   },
 ];
 
-/* Verifiable from github.com/vimmik; update as the portfolio grows */
+/* Verifiable from our shipped products; update as the portfolio grows */
 export const STATS = [
   { value: 2, suffix: '', label: 'Live Products' },
   { value: 6, suffix: '', label: 'Apps & Services Shipped' },
@@ -71,7 +71,6 @@ export const TECH_STACK: { name: string; icon: string }[] = [
   { name: 'Docker',         icon: 'https://cdn.simpleicons.org/docker/2496ED' },
   { name: 'Terraform',      icon: 'https://cdn.simpleicons.org/terraform/844FBA' },
   { name: 'Tailwind CSS',   icon: 'https://cdn.simpleicons.org/tailwindcss/06B6D4' },
-  { name: 'GitHub Actions', icon: 'https://cdn.simpleicons.org/githubactions/2088FF' },
   { name: 'Vercel',         icon: 'https://cdn.simpleicons.org/vercel/ffffff' },
 ];
 
@@ -85,7 +84,7 @@ export type Project = {
   links: { label: string; href: string }[];
 };
 
-/* Sourced from the public repositories at github.com/vimmik */
+/* Sourced from our shipped products */
 export const PROJECTS: Project[] = [
   {
     id: 'medichainlk',
@@ -96,7 +95,6 @@ export const PROJECTS: Project[] = [
     accent: '#4ECDC4',
     links: [
       { label: 'Live Demo', href: 'https://medi-chainlk-demo.vercel.app' },
-      { label: 'GitHub', href: 'https://github.com/vimmik/mediChainlk' },
     ],
   },
   {
@@ -108,12 +106,9 @@ export const PROJECTS: Project[] = [
     accent: '#0094EE',
     links: [
       { label: 'Live App', href: 'https://kotasa.kavishkadinajara.com' },
-      { label: 'GitHub', href: 'https://github.com/vimmik/kotasa' },
     ],
   },
 ];
-
-export const GITHUB_ORG_URL = 'https://github.com/vimmik';
 
 export const CONTACT_PROJECT_TYPES = [
   'Enterprise ERP / Management System',
@@ -135,5 +130,6 @@ export const CONTACT_EMAIL = 'info@vimmik.com';
 export const SOCIAL_LINKS = [
   { label: 'LinkedIn', href: 'https://www.linkedin.com/company/vimmik/about/', icon: 'linkedin' },
   { label: 'Instagram', href: 'https://www.instagram.com/vimmik_sl', icon: 'instagram' },
-  { label: 'GitHub', href: 'https://github.com/vimmik', icon: 'github' },
+  { label: 'Facebook', href: 'https://facebook.com/vimmik.sl', icon: 'facebook' },
+  { label: 'X', href: 'https://x.com/vimmik_sl', icon: 'x' },
 ] as const;

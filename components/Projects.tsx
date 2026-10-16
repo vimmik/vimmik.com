@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { PROJECTS, GITHUB_ORG_URL, type Project } from '@/lib/constants';
+import { PROJECTS, type Project } from '@/lib/constants';
 
 /* Unique geometric placeholder visual per project */
 function ProjectVisual({ id, accent }: { id: string; accent: string }) {
@@ -167,18 +167,6 @@ export default function Projects() {
           >
             Our Work
           </motion.h2>
-          <motion.a
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            href={GITHUB_ORG_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block mt-4 text-xs text-slate-400 hover:text-[#0094EE] transition-colors"
-            style={{ fontFamily: 'var(--font-ibm-plex-mono)' }}
-          >
-            {'// github.com/vimmik ↗'}
-          </motion.a>
         </div>
 
         <div className="grid md:grid-cols-2 gap-px bg-[#0094EE]/8">
